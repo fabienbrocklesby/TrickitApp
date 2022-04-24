@@ -9,8 +9,9 @@ const {
 } = require('../controllers/trickController');
 
 const { protect } = require('../middleware/authMiddleware');
+const { validateData } = require('../middleware/validationMiddleware');
 
-router.route('/').get(protect, getTricks).post(protect, setTrick);
+router.route('/').get(protect, getTricks).post(protect, validateData, setTrick);
 router.route('/:id').delete(protect, deleteTrick).put(protect, updateTrick);
 
 module.exports = router;
