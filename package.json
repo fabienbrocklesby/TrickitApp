@@ -5,6 +5,7 @@
     "start": "nodemon backend/index.js"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.5",
     "eslint": "^8.14.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-node": "^4.1.0",
@@ -12,7 +13,9 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.6.2"
+    "postcss": "^8.4.12",
+    "prettier": "^2.6.2",
+    "tailwindcss": "^3.0.24"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
