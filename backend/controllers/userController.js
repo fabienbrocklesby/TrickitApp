@@ -106,7 +106,34 @@ const sendEmail = async (req, res) => {
 
     sendEmailService(req, res, user);
 
-    res.status(200).json(user);
+    res.status(200).json('Email Sent!');
+  } catch (Error) {
+    res.status(400);
+    res.setHeader('content-type', 'text/plain');
+    res.end(`${Error.message}`);
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { resetToken, password } = req.body;
+
+    if (!resetToken || !password) {
+      throw new Error('Oops, please supply all the required fields!');
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = await User.findOne({ resetToken });
+
+    if (!user) {
+      throw new Error('Oops, there is no user with this token!');
+    }
+
+    updateService(req, res, { _id: user._id }, { password: hashedPassword, resetToken: null });
+
+    res.status(200).json('User Updated!');
   } catch (Error) {
     res.status(400);
     res.setHeader('content-type', 'text/plain');
@@ -124,4 +151,5 @@ module.exports = {
   getMe,
   updateUser,
   sendEmail,
+  updatePassword,
 };

@@ -9,6 +9,7 @@ const schema = Joi.object().keys({
   trick: Joi.string().min(3).max(70),
   songName: Joi.string().min(3).max(70),
   songUrl: Joi.string().min(3).max(70),
+  resetToken: Joi.string().min(3).max(30),
 });
 
 exports.validateData = (req, res, next) => {
