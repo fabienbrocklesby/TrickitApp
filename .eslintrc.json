@@ -13,6 +13,7 @@
     "rules": {
         "no-unused-vars": "off",
         "prefer-destructuring": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "max-len": "off"
     }
 }

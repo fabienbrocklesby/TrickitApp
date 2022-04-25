@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const postmark = require('postmark');
 const User = require('../models/userModel');
 
-const { sendEmailService } = require('../services/userService');
+const { updateService, sendEmailService } = require('../services/userService');
 
 const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
@@ -73,6 +73,27 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const id = req.user._id;
+
+    const user = await User.findById({ _id: id });
+
+    if (!user || !email) {
+      throw new Error('Oops, please supply all the required fields!');
+    }
+
+    updateService(req, res, { _id: user._id }, { email });
+
+    res.status(200).json('User updated!');
+  } catch (Error) {
+    res.status(400);
+    res.setHeader('content-type', 'text/plain');
+    res.end(`${Error.message}`);
+  }
+};
+
 const sendEmail = async (req, res) => {
   try {
     const { email } = req.body;
@@ -101,5 +122,6 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
+  updateUser,
   sendEmail,
 };

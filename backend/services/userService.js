@@ -1,13 +1,20 @@
 const postmark = require('postmark');
 const uniqid = require('uniqid');
-const { update } = require('../models/userModel');
 const User = require('../models/userModel');
 
 const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
+const updateService = async (req, res, id, newData) => {
+  await User.findByIdAndUpdate(id, newData, {
+    new: true,
+  });
+};
+
 const sendEmailService = async (req, res, user) => {
   try {
     const resetToken = uniqid();
+
+    updateService(req, res, { _id: user._id }, { resetToken });
 
     const email = await client.sendEmail({
       From: 'support@fabienbrocklesby.com',
@@ -27,5 +34,6 @@ const sendEmailService = async (req, res, user) => {
 };
 
 module.exports = {
+  updateService,
   sendEmailService,
 };
