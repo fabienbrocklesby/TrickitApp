@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const postmark = require('postmark');
 const User = require('../models/userModel');
+
+const { sendEmailService } = require('../services/userService');
+
+const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
 const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, {
   expiresIn: '30d',
@@ -68,6 +73,26 @@ const loginUser = async (req, res) => {
   }
 };
 
+const sendEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user || !email) {
+      throw new Error('Oops, this is invalid data!');
+    }
+
+    sendEmailService(req, res, user);
+
+    res.status(200).json(user);
+  } catch (Error) {
+    res.status(400);
+    res.setHeader('content-type', 'text/plain');
+    res.end(`${Error.message}`);
+  }
+};
+
 const getMe = async (req, res) => {
   res.status(200).json(req.user);
 };
@@ -76,4 +101,5 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
+  sendEmail,
 };
