@@ -8,3 +8,10 @@ services:
     volumes:
       - ./backend:/app
       - ./app/backend/node_modules
+  frontend:
+    build: ./frontend
+    container_name: frontend_container
+    ports:
+      - '8080:8080'
+    stdin_open: true
+    tty: true
