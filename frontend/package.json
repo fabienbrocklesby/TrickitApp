@@ -1,22 +1,23 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "svelte-app",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview --port 5050",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
-  },
-  "dependencies": {
-    "vue": "^3.2.33"
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv public --no-clear"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-vue": "^2.3.1",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "eslint": "^8.5.0",
-    "eslint-plugin-vue": "^8.2.0",
-    "prettier": "^2.5.1",
-    "vite": "^2.9.5"
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0"
+  },
+  "dependencies": {
+    "sirv-cli": "^2.0.0"
   }
 }

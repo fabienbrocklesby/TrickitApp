@@ -2,7 +2,7 @@
   "name": "trickit",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon backend/index.js"
+    "dev": "nodemon ./index.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.5",
