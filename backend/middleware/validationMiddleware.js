@@ -8,7 +8,7 @@ const schema = Joi.object().keys({
   password: Joi.string().min(5).max(20).regex(/^(?=(.*[a-z]){3,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/),
   trick: Joi.string().min(3).max(70),
   songName: Joi.string().min(3).max(70),
-  songUrl: Joi.string().min(3).max(70),
+  songUrl: Joi.string().min(3).max(200),
   resetToken: Joi.string().min(3).max(30),
 });
 

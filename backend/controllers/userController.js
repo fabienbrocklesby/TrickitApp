@@ -78,6 +78,12 @@ const updateUser = async (req, res) => {
     const { email } = req.body;
     const id = req.user._id;
 
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+      throw new Error('Oops, that email is already in use!');
+    }
+
     const user = await User.findById({ _id: id });
 
     if (!user || !email) {

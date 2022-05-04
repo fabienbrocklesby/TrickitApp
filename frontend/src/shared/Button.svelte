@@ -46,6 +46,11 @@
     border: 2px solid #d91b42;
   }
 
+  .primary.inverse:hover {
+    background-color: #d91b42;
+    color: #fff;
+  }
+
   .secondary.inverse {
     color: #45c496;
     background: #fff;

@@ -9,20 +9,17 @@
 
   import Button from '../shared/Button.svelte';
 
-  let fields = { email: '', password: '', password2: '' };
-  let errors = { email: '', password: '', password2: '' };
+  let fields = { resetToken: '', password: '', password2: '' };
+  let errors = { resetToken: '', password: '', password2: '' };
   let valid = false;
 
   const submitHandler = async () => {
     valid = true;
 
-    const emailValid =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (emailValid.test(String(fields.email).toLowerCase())) {
-      errors.email = '';
+    if (fields.resetToken.length > 6) {
+      errors.resetToken = '';
     } else {
-      errors.email = 'Invalid email';
+      errors.resetToken = 'Name must be at least 6 characters long';
       valid = false;
     }
 
@@ -37,20 +34,28 @@
       valid = false;
     }
 
-    // Login User
+    if (fields.password2 !== fields.password) {
+      errors.password2 = 'Passwords do not match';
+      valid = false;
+    } else {
+      errors.password2 = '';
+    }
+
+    // Reset Password
     if (valid) {
       await axios({
         method: 'post',
-        url: 'http://192.168.18.21:5000/api/users/login',
+        url: 'http://localhost:5000/api/users/updatepassword',
         data: {
-          email: fields.email,
+          resetToken: fields.resetToken,
           password: fields.password,
         },
       })
         .then((response) => {
-          localStorage.setItem('token', response.data.token);
-          dispatch('LoggedIn', true);
-          dispatch('tabChange', 'Home');
+          if (localStorage.getItem('token')) {
+            localStorage.removeItem('token');
+          }
+          dispatch('tabChange', 'Login');
         })
         .catch((error) => {
           errors.password2 = error.response.data;
@@ -61,16 +66,16 @@
 
 <div class="container mx-auto p-4" in:fade={{ duration: 200 }}>
   <div class="w-full md:w-1/2 lg:w-1/3 mx-auto my-12">
-    <h1 class="text-lg font-bold">Login</h1>
+    <h1 class="text-lg font-bold">Update Password</h1>
     <form class="flex flex-col mt-4" on:submit|preventDefault={submitHandler}>
       <input
-        type="email"
-        name="email"
+        type="text"
+        name="resetToken"
         class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-        placeholder="Email address"
-        bind:value={fields.email}
+        placeholder="Reset Token"
+        bind:value={fields.resetToken}
       />
-      <div class="error">{errors.email}</div>
+      <div class="error">{errors.resetToken}</div>
       <input
         type="password"
         name="password"
@@ -79,41 +84,22 @@
         bind:value={fields.password}
       />
       <div class="error">{errors.password}</div>
+      <input
+        type="password"
+        name="password2"
+        class="px-4 py-3 mt-4 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+        placeholder="Retype Password"
+        bind:value={fields.password2}
+      />
       <div class="error">{errors.password2}</div>
       <Button type="primary" flat={true} padding="12px 12px" margintop="18px"
-        >Login</Button
+        >Reset Password</Button
       >
-      <p
-        class="text-xs font-light text-gray-500 register hover:text-gray-900 text-center mt-4"
-        on:click={() => {
-          dispatch('title', 'Forgot Password');
-          dispatch('tabChange', 'ForgotPassword');
-        }}
-      >
-        Forgot Password?
-      </p>
-      <div class="flex flex-col items-center mt-1">
-        <p
-          class="mt-1 text-xs font-light text-gray-500 register hover:text-gray-900"
-          on:click={() => dispatch('tabChange', 'Register')}
-        >
-          New Here?
-          <span class="ml-1 font-medium secondary-border">Sign up now</span>
-        </p>
-      </div>
     </form>
   </div>
 </div>
 
 <style>
-  .secondary-border {
-    border-bottom: 2px solid #d91b42;
-  }
-
-  .register {
-    cursor: pointer;
-  }
-
   .error {
     font-weight: bold;
     font-size: 12px;
