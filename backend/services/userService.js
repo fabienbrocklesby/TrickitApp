@@ -20,7 +20,7 @@ const sendEmailService = async (req, res, user) => {
       From: 'support@fabienbrocklesby.com',
       To: user.email,
       Subject: 'Reset Your Trickit Password',
-      HtmlBody: `Hello ${user.name},<br><br>We've heared you forgot your password!<br />Here's a token to reset it:<br /><br />${resetToken}<br /><br />If you didn't request this, please ignore this email.<br /><br />Cheers,<br />Trickit Team`,
+      HtmlBody: `Hello ${user.name},<br><br>We've heard you forgot your password!<br />Here's a token to reset it:<br /><br />${resetToken}<br /><br />If you didn't request this, please ignore this email.<br /><br />Cheers,<br />Trickit Team`,
     });
 
     if (!email) {
