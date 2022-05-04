@@ -16,10 +16,10 @@
   const submitHandler = async () => {
     valid = true;
 
-    if (fields.name.length > 6) {
+    if (fields.name.length > 0) {
       errors.name = '';
     } else {
-      errors.name = 'Name must be at least 6 characters long';
+      errors.name = 'Name must be at least 1 characters long';
       valid = false;
     }
 
@@ -55,7 +55,7 @@
     if (valid) {
       await axios({
         method: 'post',
-        url: 'http://192.168.18.21:5000/api/users',
+        url: '/api/users',
         data: {
           name: fields.name,
           email: fields.email,

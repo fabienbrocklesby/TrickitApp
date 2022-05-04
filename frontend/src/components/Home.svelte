@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { fade, slide, scale } from 'svelte/transition';
   import axios from 'axios';
   import { createEventDispatcher } from 'svelte';
   import Button from '../shared/Button.svelte';
@@ -11,7 +12,7 @@
 
   const getTricks = async () => {
     try {
-      let response = await axios.get('http://localhost:5000/api/tricks', {
+      let response = await axios.get('/api/tricks', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -32,7 +33,7 @@
 
   const deleteTrick = (id) => {
     axios
-      .delete(`http://localhost:5000/api/tricks/${id}`, {
+      .delete(`/api/tricks/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -47,7 +48,7 @@
   };
 </script>
 
-<div class="p-5">
+<div class="p-5" in:fade={{ duration: 300 }}>
   <Button on:click={() => dispatch('tabChange', 'AddTrick')}
     >Trick Idea? Click ME!
   </Button>

@@ -13,5 +13,8 @@ services:
     container_name: frontend_container
     ports:
       - '8080:8080'
+    volumes:
+      - ./frontend:/app
+      - ./app/frontend/node_modules
     stdin_open: true
     tty: true

@@ -45,7 +45,7 @@
     if (valid) {
       await axios({
         method: 'post',
-        url: 'http://localhost:5000/api/users/updatepassword',
+        url: '/api/users/updatepassword',
         data: {
           resetToken: fields.resetToken,
           password: fields.password,

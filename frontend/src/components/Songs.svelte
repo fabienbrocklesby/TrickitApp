@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { fade, slide, scale } from 'svelte/transition';
   import axios from 'axios';
 
   import Button from '../shared/Button.svelte';
@@ -13,7 +14,7 @@
 
   const getsongs = async () => {
     try {
-      let response = await axios.get('http://localhost:5000/api/songs', {
+      let response = await axios.get('/api/songs', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -34,7 +35,7 @@
 
   const deleteSong = (id) => {
     axios
-      .delete(`http://localhost:5000/api/songs/${id}`, {
+      .delete(`/api/songs/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -53,7 +54,7 @@
   };
 </script>
 
-<div class="p-5">
+<div class="p-5" in:fade={{ duration: 300 }}>
   <Button on:click={() => dispatch('tabChange', 'AddSong')}
     >Found a song? Lets add it!
   </Button>
@@ -70,18 +71,19 @@
             <Card>
               <li class="song-name">
                 <span>{song.songName}</span><br />
-                <p
-                  on:click={() => {
-                    redirect(song.songUrl);
-                  }}
-                >
-                  <span style="font-size: 1rem; cursor: pointer"
-                    >{song.songUrl}</span
-                  >
-                </p>
               </li>
               <Button
                 flat={true}
+                inverse={true}
+                margintop="10px"
+                on:click={() => {
+                  redirect(song.songUrl);
+                }}
+                >Play This Song
+              </Button><br />
+              <Button
+                flat={true}
+                margintop="7.5px"
                 inverse={true}
                 on:click={() => deleteSong(song._id)}
                 >Used this song

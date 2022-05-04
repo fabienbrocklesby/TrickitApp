@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import axios from 'axios';
   import { createEventDispatcher } from 'svelte';
+  import { fade, slide, scale } from 'svelte/transition';
 
   const dispatch = createEventDispatcher();
 
@@ -17,7 +18,7 @@
 
   onMount(async () => {
     axios
-      .get('http://localhost:5000/api/users/me', {
+      .get('/api/users/me', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -48,7 +49,7 @@
     if (valid) {
       await axios({
         method: 'put',
-        url: 'http://localhost:5000/api/users/update',
+        url: '/api/users/update',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -67,56 +68,58 @@
   };
 </script>
 
-<div class="w-full md:w-1/2 lg:w-1/3 mx-auto mt-12">
-  <Card>
-    {#if user.name}
-      <h1 class="text-xl font-semibold">My information:</h1>
-      <h1 class="mt-8">User Name:</h1>
-      <p
-        class="px-4 py-3 mt-4 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-      >
-        {user.name}
-      </p>
-      <h1 class="mt-6">Email:</h1>
-      <form on:submit|preventDefault={updateEmail}>
-        <input
-          type="email"
-          name="email"
-          class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-          placeholder={user.email}
-          style="color: #000"
-          bind:value={fields.email}
-        />
-        <div class="error">{errors.email}</div>
-        <Button margintop="15px" flat={true}>Update Email</Button>
-      </form>
-      <Button
-        flat={true}
-        margintop="24px"
-        on:click={() => {
-          dispatch('title', 'Change Password');
-          dispatch('tabChange', 'ForgotPassword');
-        }}>Change Password!</Button
-      >
-    {:else}
-      <h1>Oops, there seems to be a problem ..</h1>
-    {/if}
-  </Card>
-</div>
+<div in:fade={{ duration: 450 }}>
+  <div class="w-full md:w-1/2 lg:w-1/3 mx-auto mt-12">
+    <Card>
+      {#if user.name}
+        <h1 class="text-xl font-semibold">My information:</h1>
+        <h1 class="mt-8">User Name:</h1>
+        <p
+          class="px-4 py-3 mt-4 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+        >
+          {user.name}
+        </p>
+        <h1 class="mt-6">Email:</h1>
+        <form on:submit|preventDefault={updateEmail}>
+          <input
+            type="email"
+            name="email"
+            class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+            placeholder={user.email}
+            style="color: #000"
+            bind:value={fields.email}
+          />
+          <div class="error">{errors.email}</div>
+          <Button margintop="15px" flat={true}>Update Email</Button>
+        </form>
+        <Button
+          flat={true}
+          margintop="24px"
+          on:click={() => {
+            dispatch('title', 'Change Password');
+            dispatch('tabChange', 'ForgotPassword');
+          }}>Change Password!</Button
+        >
+      {:else}
+        <h1>Oops, there seems to be a problem ..</h1>
+      {/if}
+    </Card>
+  </div>
 
-<div class="container mx-auto mt-4">
-  <div class="w-full md:w-1/2 lg:w-1/3 mx-auto">
-    <div class="flex flex-col mx-2">
-      <Button
-        on:click={() => {
-          dispatch('Logout');
-        }}
-        type="primary"
-        flat={true}
-        inverse={true}
-        padding="12px 12px"
-        margintop="0px">Log Out</Button
-      >
+  <div class="container mx-auto mt-4" in:fade={{ duration: 300 }}>
+    <div class="w-full md:w-1/2 lg:w-1/3 mx-auto">
+      <div class="flex flex-col mx-2">
+        <Button
+          on:click={() => {
+            dispatch('Logout');
+          }}
+          type="primary"
+          flat={true}
+          inverse={true}
+          padding="12px 12px"
+          margintop="0px">Log Out</Button
+        >
+      </div>
     </div>
   </div>
 </div>

@@ -2,6 +2,7 @@
   import Card from '../shared/Card.svelte';
   import Button from '../shared/Button.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { fade, slide, scale } from 'svelte/transition';
 
   import axios from 'axios';
 
@@ -41,7 +42,7 @@
 
       if (valid) {
         await axios
-          .post('http://localhost:5000/api/songs', fields, {
+          .post('/api/songs', fields, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -61,41 +62,46 @@
   };
 </script>
 
-<div class="mx-4 mt-4">
-  <Button flat={true} on:click={() => dispatch('tabChange', 'Songs')}
-    >Back</Button
-  >
-</div>
+<div in:fade={{ duration: 300 }}>
+  <div class="mx-4 mt-4">
+    <Button flat={true} on:click={() => dispatch('tabChange', 'Songs')}
+      >Back</Button
+    >
+  </div>
 
-<div class="w-full md:w-1/2 lg:w-1/3 mx-auto my-12">
-  <Card>
-    <div class="p-4">
-      <h1 class="text-xl font-semibold">Add Song</h1>
-      <form class="flex flex-col mt-4" on:submit|preventDefault={submitHandler}>
-        <input
-          type="text"
-          name="songname"
-          class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-          placeholder="Song Name"
-          bind:value={fields.songName}
-        />
-        {#if errors.songName}
-          <div class="error">{errors.songName}</div>
-        {/if}
-        <input
-          type="text"
-          name="songurl"
-          class="px-4 mt-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
-          placeholder="Song Url"
-          bind:value={fields.songUrl}
-        />
-        <div class="error">{errors.songUrl}</div>
-        <Button flat={true} padding="12px 8px" margintop="20px"
-          >Add Trick!</Button
+  <div class="w-full md:w-1/2 lg:w-1/3 mx-auto my-12">
+    <Card>
+      <div class="p-4">
+        <h1 class="text-xl font-semibold">Add Song</h1>
+        <form
+          class="flex flex-col mt-4"
+          on:submit|preventDefault={submitHandler}
         >
-      </form>
-    </div>
-  </Card>
+          <input
+            type="text"
+            name="songname"
+            class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+            placeholder="Song Name"
+            bind:value={fields.songName}
+          />
+          {#if errors.songName}
+            <div class="error">{errors.songName}</div>
+          {/if}
+          <input
+            type="text"
+            name="songurl"
+            class="px-4 mt-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+            placeholder="Song Url"
+            bind:value={fields.songUrl}
+          />
+          <div class="error">{errors.songUrl}</div>
+          <Button flat={true} padding="12px 8px" margintop="20px"
+            >Add Song!</Button
+          >
+        </form>
+      </div>
+    </Card>
+  </div>
 </div>
 
 <style>

@@ -41,7 +41,7 @@
     if (valid) {
       await axios({
         method: 'post',
-        url: 'http://192.168.18.21:5000/api/users/login',
+        url: '/api/users/login',
         data: {
           email: fields.email,
           password: fields.password,

@@ -32,7 +32,7 @@
     if (valid) {
       await axios({
         method: 'post',
-        url: 'http://localhost:5000/api/users/sendemail',
+        url: '/api/users/sendemail',
         data: {
           email: fields.email,
         },
